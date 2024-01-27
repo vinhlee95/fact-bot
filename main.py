@@ -1,7 +1,6 @@
 from langchain.document_loaders import TextLoader
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores.chroma import Chroma
@@ -48,11 +47,6 @@ db = Chroma(
   embedding_function=embeddings,
 )
 
-prompt = PromptTemplate(
-  template="Given this fact: {relevant_fact}. Answer the following question: {question}. Make sure to point out which fact number you use.",
-  input_variables=["question", "relevant_fact"]
-)
-
 chain = RetrievalQA.from_chain_type(
   llm=chat,
   retriever=db.as_retriever(),
@@ -62,7 +56,7 @@ chain = RetrievalQA.from_chain_type(
 
 while True:
   question = input(">> ")
-  result = chain.run(question)
+  result = chain.run(f"Answer {question}. Plus point out the number of the fact you uses.")
 
   print(result)
 
