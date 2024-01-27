@@ -6,6 +6,10 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores.chroma import Chroma
 from chromadb import chromadb
 
+# Uncomment to enable debug mode
+# import langchain
+# langchain.debug = True
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -51,6 +55,7 @@ chain = RetrievalQA.from_chain_type(
   llm=chat,
   retriever=db.as_retriever(),
   chain_type="stuff",
+  verbose=True,
 )
 
 
